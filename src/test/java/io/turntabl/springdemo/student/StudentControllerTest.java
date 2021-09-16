@@ -1,6 +1,7 @@
 package io.turntabl.springdemo.student;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,13 +26,29 @@ class StudentControllerTest {
 
     @Test
     void testConstructor() {
-        StudentService studentService = new StudentService();
-        assertEquals(1, (new StudentController(studentService)).hello().size());
-        assertEquals(1, studentService.getStudents().size());
+        StudentService studentService = new StudentService(mock(StudentRepository.class));
+        assertTrue((new StudentController(studentService)).hello().isEmpty());
+        assertTrue(studentService.getStudents().isEmpty());
+    }
+
+    @Test
+    void testConstructor2() {
+        StudentService studentService = new StudentService(mock(StudentRepository.class));
+        assertTrue((new StudentController(studentService)).hello().isEmpty());
+        assertTrue(studentService.getStudents().isEmpty());
     }
 
     @Test
     void testHello() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/");
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.studentController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void testHello2() throws Exception {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/");
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.studentController)
                 .build()
