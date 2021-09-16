@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -22,6 +23,11 @@ public class StudentService {
     }
 
     public void assNewStudent(Student student) {
-        System.out.println(student);
+        Optional<Student> studentOptional = studentRepository
+                .findStudentsByEmail(student.getEmail());
+        if (studentOptional.isPresent()){
+            throw new IllegalStateException("Email Taken");
+        }
+        studentRepository.save(student);
     }
 }
