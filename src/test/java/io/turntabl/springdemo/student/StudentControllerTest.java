@@ -1,7 +1,13 @@
 package io.turntabl.springdemo.student;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +45,47 @@ class StudentControllerTest {
     }
 
     @Test
+    void testConstructor3() {
+        StudentService studentService = new StudentService(mock(StudentRepository.class));
+        assertTrue((new StudentController(studentService)).hello().isEmpty());
+        assertTrue(studentService.getStudents().isEmpty());
+    }
+
+    @Test
+    void testRegisterNewStudent() {
+        Student student = new Student();
+        student.setEmail("jane.doe@example.org");
+        student.setDob(LocalDate.ofEpochDay(1L));
+        student.setAge(1);
+        student.setId(123L);
+        student.setName("Name");
+        StudentRepository studentRepository = mock(StudentRepository.class);
+        when(studentRepository.save((Student) any())).thenReturn(student);
+        when(studentRepository.findStudentsByEmail((String) any())).thenReturn(Optional.<Student>empty());
+        StudentController studentController = new StudentController(new StudentService(studentRepository));
+
+        Student student1 = new Student();
+        student1.setEmail("jane.doe@example.org");
+        student1.setDob(LocalDate.ofEpochDay(1L));
+        student1.setAge(1);
+        student1.setId(123L);
+        student1.setName("Name");
+        studentController.registerNewStudent(student1);
+        verify(studentRepository).findStudentsByEmail((String) any());
+        verify(studentRepository).save((Student) any());
+        assertTrue(studentController.hello().isEmpty());
+    }
+
+    @Test
+    void testDeleteStudent() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/{studentId}", 123L);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.studentController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
     void testHello() throws Exception {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/");
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.studentController)
@@ -50,6 +97,24 @@ class StudentControllerTest {
     @Test
     void testHello2() throws Exception {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/");
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.studentController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void testHello3() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/");
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.studentController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void testUpdateStudent() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/{studentId}", 123L);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.studentController)
                 .build()
                 .perform(requestBuilder);

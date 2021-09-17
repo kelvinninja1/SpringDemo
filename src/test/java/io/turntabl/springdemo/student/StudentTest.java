@@ -11,12 +11,12 @@ class StudentTest {
     @Test
     void testConstructor() {
         Student actualStudent = new Student();
+        actualStudent.setAge(1);
         LocalDate ofEpochDayResult = LocalDate.ofEpochDay(1L);
         actualStudent.setDob(ofEpochDayResult);
         actualStudent.setEmail("jane.doe@example.org");
         actualStudent.setId(123L);
         actualStudent.setName("Name");
-        assertEquals(1, actualStudent.getAge().intValue());
         assertSame(ofEpochDayResult, actualStudent.getDob());
         assertEquals("jane.doe@example.org", actualStudent.getEmail());
         assertEquals(123L, actualStudent.getId().longValue());
@@ -28,12 +28,12 @@ class StudentTest {
     @Test
     void testConstructor2() {
         Student actualStudent = new Student(123L, "Name", "jane.doe@example.org", LocalDate.ofEpochDay(1L));
+        actualStudent.setAge(1);
         LocalDate ofEpochDayResult = LocalDate.ofEpochDay(1L);
         actualStudent.setDob(ofEpochDayResult);
         actualStudent.setEmail("jane.doe@example.org");
         actualStudent.setId(123L);
         actualStudent.setName("Name");
-        assertEquals(1, actualStudent.getAge().intValue());
         assertSame(ofEpochDayResult, actualStudent.getDob());
         assertEquals("jane.doe@example.org", actualStudent.getEmail());
         assertEquals(123L, actualStudent.getId().longValue());
@@ -44,57 +44,6 @@ class StudentTest {
 
     @Test
     void testConstructor3() {
-        Student actualStudent = new Student("Name", "jane.doe@example.org", LocalDate.ofEpochDay(1L));
-        LocalDate ofEpochDayResult = LocalDate.ofEpochDay(1L);
-        actualStudent.setDob(ofEpochDayResult);
-        actualStudent.setEmail("jane.doe@example.org");
-        actualStudent.setId(123L);
-        actualStudent.setName("Name");
-        assertEquals(1, actualStudent.getAge().intValue());
-        assertSame(ofEpochDayResult, actualStudent.getDob());
-        assertEquals("jane.doe@example.org", actualStudent.getEmail());
-        assertEquals(123L, actualStudent.getId().longValue());
-        assertEquals("Name", actualStudent.getName());
-        assertEquals("Student{id=123, name='Name', email='jane.doe@example.org', dob=1970-01-02, age=1}",
-                actualStudent.toString());
-    }
-
-    @Test
-    void testConstructor4() {
-        Student actualStudent = new Student();
-        actualStudent.setAge(1);
-        LocalDate ofEpochDayResult = LocalDate.ofEpochDay(1L);
-        actualStudent.setDob(ofEpochDayResult);
-        actualStudent.setEmail("jane.doe@example.org");
-        actualStudent.setId(123L);
-        actualStudent.setName("Name");
-        assertSame(ofEpochDayResult, actualStudent.getDob());
-        assertEquals("jane.doe@example.org", actualStudent.getEmail());
-        assertEquals(123L, actualStudent.getId().longValue());
-        assertEquals("Name", actualStudent.getName());
-        assertEquals("Student{id=123, name='Name', email='jane.doe@example.org', dob=1970-01-02, age=1}",
-                actualStudent.toString());
-    }
-
-    @Test
-    void testConstructor5() {
-        Student actualStudent = new Student(123L, "Name", "jane.doe@example.org", LocalDate.ofEpochDay(1L));
-        actualStudent.setAge(1);
-        LocalDate ofEpochDayResult = LocalDate.ofEpochDay(1L);
-        actualStudent.setDob(ofEpochDayResult);
-        actualStudent.setEmail("jane.doe@example.org");
-        actualStudent.setId(123L);
-        actualStudent.setName("Name");
-        assertSame(ofEpochDayResult, actualStudent.getDob());
-        assertEquals("jane.doe@example.org", actualStudent.getEmail());
-        assertEquals(123L, actualStudent.getId().longValue());
-        assertEquals("Name", actualStudent.getName());
-        assertEquals("Student{id=123, name='Name', email='jane.doe@example.org', dob=1970-01-02, age=1}",
-                actualStudent.toString());
-    }
-
-    @Test
-    void testConstructor6() {
         Student actualStudent = new Student("Name", "jane.doe@example.org", LocalDate.ofEpochDay(1L));
         actualStudent.setAge(1);
         LocalDate ofEpochDayResult = LocalDate.ofEpochDay(1L);
